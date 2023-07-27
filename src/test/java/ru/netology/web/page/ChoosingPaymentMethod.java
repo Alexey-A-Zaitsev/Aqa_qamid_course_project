@@ -2,8 +2,8 @@ package ru.netology.web.page;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -14,8 +14,8 @@ public class ChoosingPaymentMethod {
         heading.shouldBe(visible);
     }
 
-    private SelenideElement cardButton = $(".button__text").shouldHave(text("Купить"));
-    private SelenideElement creditButton = $(".button__text").shouldHave(text("Купить в кредит"));
+    private SelenideElement cardButton = $(byText("Купить"));
+    private SelenideElement creditButton = $(byText("Купить в кредит"));
 
     // Нажатие кнопки "Купить"
     public ChoosingPaymentMethod buyCard() {

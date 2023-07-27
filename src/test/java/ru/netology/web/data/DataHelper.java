@@ -17,11 +17,11 @@ public class DataHelper {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Card {
-        String CardNumber;
-        String month;
-        String year;
-        String cardOwner;
         String cvc;
+        String holder;
+        String month;
+        String number;
+        String year;
     }
 
     private static final Faker faker = new Faker(new Locale("en"));
@@ -35,7 +35,13 @@ public class DataHelper {
         return " " + " " + " ";
     }
 
-    // Генераторы случайных последовательностей цифр
+    // генератор рандомных чисел. В numberLength передаём длину желаемого числа
+
+    public static String randomNumberGenerator(int numberLength) {
+        return faker.number().digits(numberLength);
+    }
+
+    /* // Генераторы случайных последовательностей цифр
     public static String getRandom1Digits() {
         return faker.numerify("#");
     }
@@ -64,6 +70,7 @@ public class DataHelper {
     public static String getRandom17Digits() {
         return faker.numerify("#################");
     }
+*/
 
     // Карты
     // Получаем номер тестовой APPROVED карты
@@ -76,41 +83,22 @@ public class DataHelper {
         return "5555 6666 7777 8888";
     }
 
-    // Получаем случайный валидный номер карты
-    public static String getRandomValidCardNumb() {
-        return getRandom16Digits();
-    }
+//    // Получаем случайный валидный номер карты.
+//    public static String getRandomValidCardNumb() {
+//        return faker.business().creditCardNumber();
+//    }
 
     // Месяц
-    /* Получаем валидный месяц. Добавляем к текущему месяцу +1 месяц для того,
-    чтобы срок действия карты всегда был не истекшим
-    */
-    public static String getCurrentMonth() {
-        return LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
-    }
 
-    /* Получаем прошедший месяц текущего года.
-    Будет использовано для проверки вывода сообщения об истечении срока действия
-*/
-    public static String getLastMonth() {
-        return LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
+    public static String getMonth(int shiftedMonth) {
+        return LocalDate.now().plusMonths(shiftedMonth).format(DateTimeFormatter.ofPattern("MM"));
     }
 
     // Год
-    // Получаем валидный год для действующей карты
-    public static String getCurrentYear() {
-        return LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("YY"));
+    public static String getYear(int shiftedYear) {
+        return LocalDate.now().plusMonths(shiftedYear).format(DateTimeFormatter.ofPattern("YY"));
     }
 
-    // Получаем значение прошлого года. Истекший срок действия
-    public static String getLastYear() {
-        return LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("YY"));
-    }
-
-    // Получаем не валидный год (текущий год+6) для проверки вывода сообщения о некорректной дате
-    public static String getFutureYear() {
-        return LocalDate.now().plusYears(6).format(DateTimeFormatter.ofPattern("YY"));
-    }
 
     // Владелец
     // Получаем валидное имя держателя карты
@@ -147,12 +135,10 @@ public class DataHelper {
     /* Для проверок поля CVC/CVV будем применять результат генераторв случайных чисел,
     для провверки ввода букв используем один из методов ввода имени владельца
      */
-    // создаем валидную карту
-    public static Card getValidCardInfo() {
-        return new Card(getApprovedCardNumb(), getCurrentMonth(), getCurrentYear(), getValidCardOwner(), getRandom3Digits());
-    }
 
-    public static String createJSON(Card info) {
+
+
+/*    public static String createJSON(Card info) {
         return "{\n" +
                 "  \"number\": \"" + info.getCardNumber() + "\",\n" +
                 "  \"year\": \"" + info.getMonth() + "\",\n" +
@@ -160,7 +146,7 @@ public class DataHelper {
                 "  \"holder\": \"" + info.getCardOwner() + "\",\n" +
                 "  \"cvc\": \"" + info.getCvc() + "\"\n" +
                 "}";
-    }
+    }*/
 
 
 }

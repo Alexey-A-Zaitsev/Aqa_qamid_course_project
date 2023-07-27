@@ -25,20 +25,18 @@ public class SQLHelper {
 
     @SneakyThrows
     public static String getPaymentTransactionStatus() {
-        var codeSQL = "SELECT status FROM payment_entity";
-        try (var connection = getConnection()) {
-            var result = runner.query(connection, codeSQL, new ScalarHandler<String>());
-            return result;
-        }
+        var codeSQL = "SELECT status FROM payment_entity ORDER BY created DESC";
+        var connection = getConnection();
+        var result = runner.query(connection, codeSQL, new ScalarHandler<String>());
+        return result;
     }
 
     @SneakyThrows
     public static String getLoanTransactionStatus() {
-        var codeSQL = "SELECT status FROM credit_request_entity";
-        try (var connection = getConnection()) {
+        var codeSQL = "SELECT status FROM credit_request_entity ORDER BY created DESC";
+        var connection = getConnection();
             var result = runner.query(connection, codeSQL, new ScalarHandler<String>());
             return result;
-        }
     }
 
     @SneakyThrows

@@ -7,29 +7,30 @@ import ru.netology.web.data.DataHelper;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class CardPage {
 
-    private SelenideElement heading = $x("//h3[contains(text(), 'Оплата по карте')]");
-    private SelenideElement cardNumber = $x("//*[contains(text(), 'Номер карты')]");
-    private SelenideElement month = $x("//*[contains(text(), 'Месяц')]");
-    private SelenideElement year = $x("//*[contains(text(), 'Год')]");
-    private SelenideElement owner = $x("//*[contains(text(), 'Владелец')]");
-    private SelenideElement cvc = $x("//*[contains(text(), 'CVC/CVV')]");
-    private SelenideElement continueButton = $(".button__text").shouldHave(text("Продолжить"));
-    private SelenideElement creditButton = $(".button__text").shouldHave(text("Купить в кредит"));
-    private SelenideElement successMessage = $x("//*[contains(text(), 'Успешно')]");
-    private SelenideElement bankRefusedMessage = $x("//*[contains(text(), 'Банк отказал')]");
-    private SelenideElement errorNotificationCardNumber = $("(//span[text()='Неверный формат'])[1]");
-    private SelenideElement errorNotificationMonth = $("(//span[text()='Неверный формат'])[2]");
-    private SelenideElement errorNotificationYear = $("(//span[text()='Неверный формат'])[3]");
-    private SelenideElement errorNotificationCVC = $("(//span[text()='Неверный формат'])[4]");
-    private SelenideElement errorNotificationOwner = $("//span[text()='Поле обязательно для заполнения']");
-    private SelenideElement errorNotificationCardYearExpired = $("//span[text()='Истёк срок действия карты']");
+    private SelenideElement heading =  $(byText("Оплата по карте"));
+    private SelenideElement cardNumber = $("[placeholder=\"0000 0000 0000 0000\"]");
+    private SelenideElement month = $("[placeholder=\"08\"]");
+    private SelenideElement year = $("[placeholder=\"22\"]");
+    private SelenideElement owner = $(byText("Владелец")).parent().$(".input__control");
+    private SelenideElement cvc = $("[placeholder=\"999\"]");
+    private SelenideElement buyButton =  $(byText("Купить"));
+    private SelenideElement creditButton = $(byText("Купить в кредит"));
+    private SelenideElement continueButton = $(byText("Продолжить"));
+    private SelenideElement successMessage = $(".notification_status_ok .notification__title");
+    private SelenideElement bankRefusedMessage = $x("//[contains(text(), 'Банк отказал')]");
+    private SelenideElement errorNotificationCardNumber = $x("(//span[text()='Неверный формат'])[1]");
+    private SelenideElement errorNotificationMonth = $x("(//span[text()='Неверный формат'])[2]");
+    private SelenideElement errorNotificationYear = $x("(//span[text()='Неверный формат'])[3]");
+    private SelenideElement errorNotificationCVC = $x("(//span[text()='Неверный формат'])[4]");
+    private SelenideElement errorNotificationOwner = $x("//span[text()='Поле обязательно для заполнения']");
+    private SelenideElement errorNotificationCardYearExpired = $(byText("Истёк срок действия карты")).parent().$(".input__sub");
 
     /* Т.к. в форме покупки невозможно вызвать одновременно ошибку с невалидным значением в полях Месяц и Год (первой обрабатывается ошибка поля год),
     а селекторы их ошибок одинаковы, будем использовать полный путь.
@@ -42,13 +43,29 @@ public class CardPage {
     }
 
     public void waitingSuccessMessage() {
-        successMessage.shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(Condition.exactText("Успешно"));
+        successMessage.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
     public void waitingErrorMessage() {
         bankRefusedMessage.shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(Condition.exactText("Банк отказал"));
     }
 
+    // Клики по полям
+    public void clickCardNumber() {
+        cardNumber.click();
+    }
+    public void clickMonth() {
+        month.click();
+    }
+    public void clickYear() {
+        year.click();
+    }
+    public void clickOwner() {
+        owner.click();
+    }
+    public void clickCvc() {
+        cvc.click();
+    }
     // Заполение поля cardNumber
     public void inputCardNumFieldApprovedInfo() {
         cardNumber.setValue(DataHelper.getApprovedCardNumb());
@@ -59,15 +76,15 @@ public class CardPage {
     }
 
     public void inputCardNumFieldRandomInfo() {
-        cardNumber.setValue(DataHelper.getRandomValidCardNumb());
+        cardNumber.setValue(DataHelper.randomNumberGenerator(16));
     }
 
     public void inputCardNumFieldInvalid15() {
-        cardNumber.setValue(DataHelper.getRandom15Digits());
+        cardNumber.setValue(DataHelper.randomNumberGenerator(15));
     }
 
     public void inputCardNumFieldInvalid17() {
-        cardNumber.setValue(DataHelper.getRandom17Digits());
+        cardNumber.setValue(DataHelper.randomNumberGenerator(17));
     }
 
     public void inputCardNumFieldLetters() {
@@ -82,22 +99,22 @@ public class CardPage {
         cardNumber.setValue(DataHelper.getSpaces());
     }
 
-// Заполение поля cardNumber
+// Заполение поля month
 
     public void inputMonthFieldValidInfo() {
-        month.setValue(DataHelper.getCurrentMonth());
+        month.setValue(DataHelper.getMonth(1));
     }
 
     public void inputMonthFieldLastInfo() {
-        month.setValue(DataHelper.getLastMonth());
+        month.setValue(DataHelper.getMonth(-1));
     }
 
     public void inputMonthFieldInvalid1() {
-        month.setValue(DataHelper.getRandom1Digits());
+        month.setValue(DataHelper.randomNumberGenerator(1));
     }
 
     public void inputMonthFieldInvalid3() {
-        month.setValue(DataHelper.getRandom3Digits());
+        month.setValue(DataHelper.randomNumberGenerator(3));
     }
 
     public void inputMonthFieldZeroValue() {
@@ -123,23 +140,23 @@ public class CardPage {
 // Заполение поля Year
 
     public void inputYearFieldValidInfo() {
-        year.setValue(DataHelper.getCurrentYear());
+        year.setValue(DataHelper.getYear(1));
     }
 
     public void inputYearFieldInvalidLastInfo() {
-        year.setValue(DataHelper.getLastYear());
+        year.setValue(DataHelper.getYear(-1));
     }
 
     public void inputYearFieldInvalidFutureInfo() {
-        year.setValue(DataHelper.getFutureYear());
+        year.setValue(DataHelper.getYear(9));
     }
 
     public void inputYearFieldInvalid1() {
-        year.setValue(DataHelper.getRandom1Digits());
+        year.setValue(DataHelper.randomNumberGenerator(1));
     }
 
     public void inputYearFieldInvalid3() {
-        year.setValue(DataHelper.getRandom3Digits());
+        year.setValue(DataHelper.randomNumberGenerator(3));
     }
 
     public void inputYearFieldLetters() {
@@ -180,7 +197,7 @@ public class CardPage {
     }
 
     public void inputOwnerFieldDigitsValue() {
-        owner.setValue(DataHelper.getRandom17Digits());
+        owner.setValue(DataHelper.randomNumberGenerator(3));
     }
 
     public void inputOwnerFieldSpec() {
@@ -193,15 +210,15 @@ public class CardPage {
 
     // Заполение поля cvc
     public void inputCvcFieldValidInfo() {
-        cvc.setValue(DataHelper.getRandom3Digits());
+        cvc.setValue(DataHelper.randomNumberGenerator(3));
     }
 
     public void inputCvcFieldInvalid1() {
-        cvc.setValue(DataHelper.getRandom1Digits());
+        cvc.setValue(DataHelper.randomNumberGenerator(1));
     }
 
     public void inputCvcFieldInvalid4() {
-        cvc.setValue(DataHelper.getRandom4Digits());
+        cvc.setValue(DataHelper.randomNumberGenerator(4));
     }
 
     public void inputCvcFieldLetters() {
@@ -243,6 +260,9 @@ public class CardPage {
     }
 
     // Нажатие на кнопки
+    public void buyButtonClick() {
+        buyButton.click();
+    }
     public void continueButtonClick() {
         continueButton.click();
     }
