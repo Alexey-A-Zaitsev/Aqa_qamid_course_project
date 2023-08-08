@@ -12,9 +12,9 @@ compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
 allure {
-    version = '2.16.1'
+    version = '2.21.0'
     useJUnit5 {
-        version = '2.16.1'
+        version = '2.21.0'
     }
 }
 
@@ -37,7 +37,7 @@ dependencies {
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
-    testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
+    testImplementation 'io.qameta.allure:allure-selenide:2.21.0'
 
 }
 
