@@ -31,7 +31,7 @@ public class PurchaseByCardTest {
 
     @BeforeEach
     void setup() {
-        open("http://localhost:8080");
+        open("http://localhost:8080/");
         var choosingMethod = new ChoosingPaymentMethod();
         choosingMethod.buyCard();
     }
