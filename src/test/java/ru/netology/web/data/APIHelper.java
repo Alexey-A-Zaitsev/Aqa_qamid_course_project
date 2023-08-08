@@ -19,10 +19,10 @@ public class APIHelper {
             .build();
 
 
-    public static void payWithCard(int expectedStatusCode, String expectedTransactionStatus) {
+    public static void payWithCard(int expectedStatusCode, String expectedTransactionStatus, DataHelper.Card card) {
         given()
                 .spec(requestSpec)
-                .body(DataHelper.Card.class)
+                .body(card)
                 .when()
                 .post("/v1/pay")
                 .then()

@@ -3,7 +3,6 @@ package ru.netology.web.page;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
-import ru.netology.web.data.DataHelper;
 
 import java.time.Duration;
 
@@ -24,13 +23,14 @@ public class CardPage {
     private SelenideElement creditButton = $(byText("Купить в кредит"));
     private SelenideElement continueButton = $(byText("Продолжить"));
     private SelenideElement successMessage = $(".notification_status_ok .notification__title");
-    private SelenideElement bankRefusedMessage = $x("//[contains(text(), 'Банк отказал')]");
-    private SelenideElement errorNotificationCardNumber = $x("(//span[text()='Неверный формат'])[1]");
-    private SelenideElement errorNotificationMonth = $x("(//span[text()='Неверный формат'])[2]");
-    private SelenideElement errorNotificationYear = $x("(//span[text()='Неверный формат'])[3]");
-    private SelenideElement errorNotificationCVC = $x("(//span[text()='Неверный формат'])[4]");
+    private SelenideElement bankRefusedMessage = $(".notification_status_error .notification__content");
+    private SelenideElement errorNotificationCardNumber = $(byText("Номер карты")).parent().$(byText("Неверный формат"));;
+    private SelenideElement errorNotificationMonth = $(byText("Месяц")).parent().$(byText("Неверный формат"));
+    private SelenideElement errorNotificationYear = $(byText("Год")).parent().$(byText("Неверный формат"));
+    private SelenideElement errorNotificationCVC = $(byText("CVC/CVV")).parent().$(byText("Неверный формат"));
     private SelenideElement errorNotificationOwner = $x("//span[text()='Поле обязательно для заполнения']");
     private SelenideElement errorNotificationCardYearExpired = $(byText("Истёк срок действия карты")).parent().$(".input__sub");
+
 
     /* Т.к. в форме покупки невозможно вызвать одновременно ошибку с невалидным значением в полях Месяц и Год (первой обрабатывается ошибка поля год),
     а селекторы их ошибок одинаковы, будем использовать полный путь.
@@ -47,26 +47,47 @@ public class CardPage {
     }
 
     public void waitingErrorMessage() {
-        bankRefusedMessage.shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(Condition.exactText("Банк отказал"));
+        bankRefusedMessage.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
-    // Клики по полям
-    public void clickCardNumber() {
-        cardNumber.click();
+    // Отображение полей формы
+
+    public void displayingFormFields() {
+        heading.shouldBe(visible);
+        cardNumber.shouldBe(visible);
+        month.shouldBe(visible);
+        year.shouldBe(visible);
+        owner.shouldBe(visible);
+        cvc.shouldBe(visible);
+        continueButton.shouldBe(visible);
+        creditButton.shouldBe(visible);
+
     }
-    public void clickMonth() {
-        month.click();
+
+
+    // Заполение полей
+
+    public void inputInCardNumberField(String value) {
+        cardNumber.setValue(value);
     }
-    public void clickYear() {
-        year.click();
+
+    public void inputInMonthField(String value) {
+        month.setValue(value);
     }
-    public void clickOwner() {
-        owner.click();
+
+    public void inputInYearField(String value) {
+        year.setValue(value);
     }
-    public void clickCvc() {
-        cvc.click();
+
+    public void inputInOwnerField(String value) {
+        owner.setValue(value);
     }
-    // Заполение поля cardNumber
+
+    public void inputInCvcField(String value) {
+        cvc.setValue(value);
+    }
+   /*
+
     public void inputCardNumFieldApprovedInfo() {
         cardNumber.setValue(DataHelper.getApprovedCardNumb());
     }
@@ -232,6 +253,7 @@ public class CardPage {
     public void inputCvcFieldSpaces() {
         cvc.setValue(DataHelper.getSpaces());
     }
+*/
 
 // Вывод сообщений об ошибках
 
@@ -257,6 +279,14 @@ public class CardPage {
 
     public void outputErrorNotificationCardYearExpired() {
         errorNotificationCardYearExpired.shouldBe(visible);
+    }
+
+    public void outputErrorInvalidCardExpirationDate() {
+        errorNotificationInvalidYear.shouldBe(visible);
+    }
+
+    public void outputErrorNotificationCardMonthExpired() {
+        errorNotificationCardMonthExpired.shouldBe(visible);
     }
 
     // Нажатие на кнопки
@@ -291,5 +321,42 @@ public class CardPage {
     public void cleanCvcField() {
         cvc.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
     }
+
+
+    // Методы извлечения данных из полей
+
+    // Номер карты
+    public String getValueCardField() {
+        String getValue = cardNumber.getValue().replaceAll("\\s+", "");
+        return getValue;
+    }
+
+    // Месяц
+    public String getValueMonthField() {
+        String getValue = month.getValue().replaceAll("\\s+", "");
+        return getValue;
+    }
+
+    // Год
+    public String getValueYearField() {
+        String getValue = year.getValue().replaceAll("\\s+", "");
+        return getValue;
+    }
+
+    // Владелец
+    public String getValueOwnerField() {
+        String getValue = owner.getValue();
+        return getValue;
+    }
+
+    // CVC/CVV
+    public String getValueCVCField() {
+        String getValue = cvc.getValue().replaceAll("\\s+", "");
+        return getValue;
+    }
+
+
+
+
 
 }

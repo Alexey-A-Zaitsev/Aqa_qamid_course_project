@@ -41,37 +41,6 @@ public class DataHelper {
         return faker.number().digits(numberLength);
     }
 
-    /* // Генераторы случайных последовательностей цифр
-    public static String getRandom1Digits() {
-        return faker.numerify("#");
-    }
-
-    public static String getRandom2Digits() {
-        return faker.numerify("##");
-    }
-
-    public static String getRandom3Digits() {
-        return faker.numerify("###");
-    }
-
-    public static String getRandom4Digits() {
-        return faker.numerify("####");
-    }
-
-    public static String getRandom15Digits() {
-        return faker.numerify("###############");
-    }
-
-    // для уверенности в том, что случайная последовательность будет валидной для номера карты
-    public static String getRandom16Digits() {
-        return faker.business().creditCardNumber();
-    }
-
-    public static String getRandom17Digits() {
-        return faker.numerify("#################");
-    }
-*/
-
     // Карты
     // Получаем номер тестовой APPROVED карты
     public static String getApprovedCardNumb() {
@@ -83,11 +52,6 @@ public class DataHelper {
         return "5555 6666 7777 8888";
     }
 
-//    // Получаем случайный валидный номер карты.
-//    public static String getRandomValidCardNumb() {
-//        return faker.business().creditCardNumber();
-//    }
-
     // Месяц
 
     public static String getMonth(int shiftedMonth) {
@@ -96,7 +60,7 @@ public class DataHelper {
 
     // Год
     public static String getYear(int shiftedYear) {
-        return LocalDate.now().plusMonths(shiftedYear).format(DateTimeFormatter.ofPattern("YY"));
+        return LocalDate.now().plusYears(shiftedYear).format(DateTimeFormatter.ofPattern("YY"));
     }
 
 
@@ -123,7 +87,7 @@ public class DataHelper {
 
     // Получаем валидное имя с пробелами перед и после значения. Используем для проверки обрезки пробелов
     public static String getValidNameTrimmingSpaces() {
-        return " " + faker.name().firstName() + " ";
+        return " " + faker.name().fullName() + " ";
     }
 
     // Получаем вледельца из одного слова
@@ -131,22 +95,17 @@ public class DataHelper {
         return faker.name().firstName();
     }
 
-    // CVC/CVV
-    /* Для проверок поля CVC/CVV будем применять результат генераторв случайных чисел,
-    для провверки ввода букв используем один из методов ввода имени владельца
-     */
 
+    public static Card status(String cardNum) {
+        return new Card(
+                randomNumberGenerator(3),
+                getValidCardOwner(),
+                getMonth(1),
+                cardNum,
+                getYear(1)
 
-
-/*    public static String createJSON(Card info) {
-        return "{\n" +
-                "  \"number\": \"" + info.getCardNumber() + "\",\n" +
-                "  \"year\": \"" + info.getMonth() + "\",\n" +
-                "  \"month\": \"" + info.getYear() + "\",\n" +
-                "  \"holder\": \"" + info.getCardOwner() + "\",\n" +
-                "  \"cvc\": \"" + info.getCvc() + "\"\n" +
-                "}";
-    }*/
+        );
+    }
 
 
 }
