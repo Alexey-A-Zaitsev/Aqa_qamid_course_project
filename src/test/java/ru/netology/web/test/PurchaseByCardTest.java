@@ -31,8 +31,8 @@ public class PurchaseByCardTest {
 
     @BeforeEach
     void setup() {
-        var choosingMethod = open("http://localhost:8080/",
-        ChoosingPaymentMethod.class);
+        open("http://localhost:8080/");
+        var choosingMethod = new ChoosingPaymentMethod();
         choosingMethod.buyCard();
     }
 
@@ -546,7 +546,7 @@ public class PurchaseByCardTest {
         String value = DataHelper.getValidNameLower();
         page.inputInOwnerField(value);
         page.continueButtonClick();
-        assertEquals(value.toUpperCase(), page.getValueOwnerField());
+        assertEquals(value, page.getValueOwnerField().toUpperCase());
 
     }
 
@@ -561,7 +561,7 @@ public class PurchaseByCardTest {
         String value = DataHelper.getValidNameTrimmingSpaces();
         page.inputInOwnerField(value);
         page.continueButtonClick();
-        assertEquals(value.trim(), page.getValueOwnerField());
+        assertEquals(value, page.getValueOwnerField().trim());
 
     }
 
