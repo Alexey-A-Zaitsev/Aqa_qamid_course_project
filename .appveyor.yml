@@ -10,7 +10,7 @@ build: off  # будем использовать свой скрипт сбор
 
 install:
   - docker-compose up &
-  - sleep 65 && java -jar ./artifacts/aqa-shop.jar &
+  - sleep 120 && java -jar ./artifacts/aqa-shop.jar &
 
 build_script:
   - sleep 120 && chmod +x gradlew
