@@ -91,6 +91,7 @@ public class PurchaseByCardTest {
         page.inputInCvcField(DataHelper.randomNumberGenerator(3));
         page.continueButtonClick();
         page.waitingErrorMessage();
+        assertEquals("DECLINED", SQLHelper.getPaymentTransactionStatus());
     }
 
     @Test
