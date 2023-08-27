@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     implementation 'org.testng:testng:7.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testImplementation 'com.codeborne:selenide:6.16.0'
+    testImplementation 'com.codeborne:selenide:6.17.2'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'org.projectlombok:lombok:1.18.26'
     compileOnly 'org.projectlombok:lombok:1.18.24'
