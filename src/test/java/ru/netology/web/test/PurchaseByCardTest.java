@@ -547,7 +547,7 @@ public class PurchaseByCardTest {
         String value = DataHelper.getValidNameLower();
         page.inputInOwnerField(value);
         page.continueButtonClick();
-        assertEquals(value, page.getValueOwnerField().toUpperCase());
+        assertEquals(value.toUpperCase(), page.getValueOwnerField());
 
     }
 
@@ -562,7 +562,7 @@ public class PurchaseByCardTest {
         String value = DataHelper.getValidNameTrimmingSpaces();
         page.inputInOwnerField(value);
         page.continueButtonClick();
-        assertEquals(value, page.getValueOwnerField().trim());
+        assertEquals(value.trim(), page.getValueOwnerField());
 
     }
 
